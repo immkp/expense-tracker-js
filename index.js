@@ -56,28 +56,22 @@ function addTransactionDOM(transaction) {
 }
 
 function updateValues() {
-  const amounts = transactions.map((transaction) => transaction.amount)
-  console.log(amounts)
-  const total = amounts
-    .reduce(
-      (acc, item) => (acc += typeof item == "string" ? -parseInt(item) : item),
-      0
-    )
-    .toFixed(2)
-  console.log(total)
-  const income = amounts
-    .filter((item) => typeof item == "number")
-    .reduce((acc, item) => (acc += item), 0)
-    .toFixed(2)
-  const expense = (
-    amounts
-      .filter((item) => typeof item == "string")
-      .reduce((acc, item) => (acc += parseInt(item)), 0) * -1
-  ).toFixed(2)
+ let total=0,income=0,expense=0
+ console.log(transactions)
+ for (let i = 0; i < transactions.length; i++) {
+  if (transactions[i].type == "income") {
+   total += parseInt(transactions[i].amount)
+   income += parseInt(transactions[i].amount)
+  }
+  else {
+   total -= parseInt(transactions[i].amount)
+   expense += parseInt(transactions[i].amount) 
+  }
+ }
 
-  balance.innerText = `$${total}`
-  money_plus.innerText = `$${income}`
-  money_minus.innerText = `$${expense}`
+  balance.innerText = `$${total.toFixed(2)}`
+  money_plus.innerText = `$${income.toFixed(2)}`
+  money_minus.innerText = `$${expense.toFixed(2)}`
 }
 
 function removeTransaction(id) {
